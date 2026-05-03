@@ -1,4 +1,4 @@
-import Course from "./components/Course";
+import Course from "./components/Course"; // Courses is already implemented as a seperate module
 
 const App = () => {
   const courses = [
