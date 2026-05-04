@@ -29,6 +29,11 @@
       "name": "virat",
       "number": "18",
       "id": "iP1G7xXawac"
+    },
+    {
+      "name": "sam",
+      "number": "200",
+      "id": "I5D_l_CeBEI"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
