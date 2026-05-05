@@ -3,12 +3,14 @@ import Person from "./components/Person";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import phoneService from "./services/phone.js"
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [notification, setNotification] = useState({})
 
   useEffect(() => {
     phoneService
@@ -36,6 +38,10 @@ const App = () => {
             setPersons((prevPersons) =>
               prevPersons.map((prevPerson) => prevPerson.id === updatePerson.id ? returnedPerson : prevPerson))
           })
+        setNotification({ message: `${newName}'s phone number updated to ${newNumber}`, type: "noti" })
+        setTimeout(() => setNotification(null), 5000)
+        setNewName("");
+        setNewNumber("");
       }
     } else {
       const newPerson = { name: newName, number: newNumber }
@@ -53,6 +59,8 @@ const App = () => {
       //   ...persons,
       //   newPerson
       // ]);
+      setNotification({ message: `Added ${newName} with phone number ${newNumber}`, type: "noti" })
+      setTimeout(() => setNotification(null), 5000)
       setNewName("");
       setNewNumber("");
     }
@@ -82,12 +90,20 @@ const App = () => {
       .remove(id)
       .then(deletedPerson => {
         setPersons((prevPerson) => prevPerson.filter((person) => person.id !== deletedPerson.id))
+        setNotification({ message: ` Deleted ${name}`, type: "noti" })
+        setTimeout(() => setNotification(null), 5000)
+      }).catch((error) => {
+        setNotification({ message: `Information of ${name} has already been removed from the server`, type: "error" })
+        setTimeout(() => setNotification(null), 5000)
+        console.log(error)
       })
+
   }
 
   return (
     <div>
       <h1>Phonebook</h1>
+      <Notification message={notification?.message} type={notification?.type} />
       <div>
         <Filter filter={filter} setFilter={setFilter} />
       </div>
