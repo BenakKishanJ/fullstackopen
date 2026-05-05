@@ -63,6 +63,18 @@ const App = () => {
         person.name.toLowerCase().includes(filter.toLowerCase()),
       );
 
+  const deletePerson = (id, name) => {
+    const confirmDelete = window.confirm(`Delete ${name}`)
+
+    if (!confirmDelete) return
+
+    phoneService
+      .remove(id)
+      .then(deletedPerson => {
+        setPersons((prevPerson) => prevPerson.filter((person) => person.id !== deletedPerson.id))
+      })
+  }
+
   return (
     <div>
       <h1>Phonebook</h1>
@@ -80,7 +92,7 @@ const App = () => {
       <h1>Numbers</h1>
       <div>
         {filteredPersons.map((person) => (
-          <Person key={person.name} name={person.name} number={person.number} />
+          <Person key={person.id} name={person.name} number={person.number} deletePerson={() => deletePerson(person.id, person.name)} />
         ))}
       </div>
     </div>
